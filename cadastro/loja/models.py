@@ -1,4 +1,6 @@
 from decimal import Decimal
+import email
+from turtle import mode
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -20,8 +22,30 @@ class Produto(models.Model):
     )
     
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-    
+      
     
     def __str__(self) -> str:
         return self.titulo
+    
+    
+class Clientes(models.Model):
+    nome = models.CharField(max_length=200)
+    idade = models.PositiveSmallIntegerField()
+    email = models.EmailField()
+    cpf  = models.CharField(max_length=11)
+    celular = models.CharField(max_length=15)
+
+    def __str__(self) -> str:
+        return self.nome
+
+class Avaliacoes(models.Model):
+    cliente = models.ForeignKey(Clientes, on_delete=models.PROTECT)
+    produto =  models.ForeignKey(Produto, on_delete=models.CASCADE)
+    #categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
+    nota = models.DecimalField(max_digits=3, decimal_places=2)
+    
+    def __str__(self) -> str:
+        return self.nota
+    
+    
 
